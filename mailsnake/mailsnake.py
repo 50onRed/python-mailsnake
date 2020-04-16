@@ -122,7 +122,7 @@ class MailSnake(object):
                                     headers=headers,
                                     **self.requests_opts)
         except requests.exceptions.RequestException as e:
-            raise HTTPRequestException(e.message)
+            raise HTTPRequestException(str(e))
 
         if req.status_code != 200:
             raise HTTPRequestException(json.dumps({
@@ -145,7 +145,7 @@ class MailSnake(object):
             else:
                 rsp = json.loads(req.text)
         except ValueError as e:
-            raise ParseException(e.message)
+            raise ParseException(str(e))
 
         types_ = int, bool, basestring, types.FunctionType
         if not isinstance(rsp, types_) and 'error' in rsp and 'code' in rsp:
